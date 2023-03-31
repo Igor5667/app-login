@@ -8,13 +8,14 @@ function Adduser(){
 
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
-    const [errorModal, setErrorModal] = useState('')
+    const [errorModal, setErrorModal] = useState(false)
 
     function namedChangeHandler(event){
         setLogin(event.target.value)
+        console.log(login)
     }
     function passwordChangeHandler(event){
-        setLogin(event.target.value)
+        setPassword(event.target.value)
     }
     function addUserhandler(event){
         event.preventDefault();
@@ -23,15 +24,45 @@ function Adduser(){
         setPassword('');
     }
 
+    async function submit(event){
+        event.preventDefault();
+          
+        if(login != "login"){
+            setErrorModal({
+                    title: "Invalid Login",
+                    msg: "type correct data"
+            });
+           
+            return ;
+        }
+       
+
+        const user={
+            name:login,
+            password: password,
+        }
+        // console.log(user)
+
+        // console.log(login);
+        const res = await fetch('https://testowa-3a831-default-rtdb.firebaseio.com/testowa.json',
+            {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers:{
+                'Content-Type': 'application.json'
+            }
+            
+            }
+        ) ;
+        const data = await res.json() ;
+        console.log(data) ;
+        
+    }
+
     function addUserHandler(event){
         event.preventDefault();
 
-        if(login != "login"){
-            setErrorModal({
-                title: "Invalid Login",
-                msg: "type correct data"
-            })
-        }
+        
 
         setLogin('');
         setPassword('')
@@ -40,13 +71,13 @@ function Adduser(){
 
     return(
         <>
-        {errorModal && <ErrorModal title={errorModal.title} msg={errorModal.msg}/>}
+            {errorModal && <ErrorModal title={errorModal.title} msg={errorModal.msg}/>}
             
-                <form>
-                    <label>Login</label>
-                    <input type="text" id='username' onChange={namedChangeHandler} value='login'/>
-                    <label>password</label>
-                    <input type="password"  onChange={passwordChangeHandler} value='password'/>
+                <form onSubmit={submit}>
+                    <label>Login</label><br/>
+                    <input type="text" id='username' onChange={namedChangeHandler} value={login}/><br/>
+                    <label>password</label><br/>
+                    <input type="password"  onChange={passwordChangeHandler} value={password}/><br/>
                     <Button myType="submit">Add User</Button>
                 </form>
           
@@ -55,3 +86,10 @@ function Adduser(){
 }
 
 export default Adduser;
+
+// 
+
+// setErrorModal({
+//     title: "Invalid Login",
+//     msg: "type correct data"
+// });
