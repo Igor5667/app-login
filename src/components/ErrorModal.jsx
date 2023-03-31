@@ -11,13 +11,13 @@ function ErrorModal(props){
             <div>
                 <Card>
                     <header>
-                        <h2>{props.msg}</h2>
+                        <h2>{props.title}</h2>
                     </header>
                     <div>
                         <p>{props.msg}</p>
                     </div>
                     <footer>
-                        <Button></Button>
+                        <Button>Okej</Button>
                     </footer>
                 </Card>
             </div>
